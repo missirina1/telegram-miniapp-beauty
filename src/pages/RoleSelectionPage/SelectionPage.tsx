@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Scissors, Smile } from "lucide-react";
+import { Smile } from "lucide-react";
 
 export default function SelectionPage() {
   const navigate = useNavigate();
