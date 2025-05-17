@@ -1,8 +1,15 @@
 import { useState, useEffect } from "react";
 
+type Appointment = {
+  id: number;
+  client: string;
+  time: string;
+  service: string;
+};
+
 export default function MasterAppointments() {
-  // Заглушка с примерами записей
-  const [appointments, setAppointments] = useState([]);
+  // Указываем тип состояния как массив объектов типа Appointment
+  const [appointments, setAppointments] = useState<Appointment[]>([]);
 
   useEffect(() => {
     // Тут будет загрузка реальных данных — пока пример
