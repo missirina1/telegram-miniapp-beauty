@@ -65,8 +65,8 @@ export default function ProfileSettings() {
               placeholder="Расскажите о себе..."
               value={description}
               onChange={(e) => setDescription(e.target.value)}
+              rows={3}
               className="w-full border border-chocolate-light rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-chocolate"
-              rows="3"
             ></textarea>
           </div>
 
