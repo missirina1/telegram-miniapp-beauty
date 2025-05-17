@@ -17,6 +17,7 @@
 
 /* Убираем отступы, делаем full-height и задаем мобильную адаптацию */
 body {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
   min-width: 320px;

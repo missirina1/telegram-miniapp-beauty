@@ -1,6 +1,10 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  max-width: 480px;
+
+  margin: 0;
+  padding: 0 1rem;
+  min-height: 100vh;
+  background-color: #f8f5f2; /* Фоновый цвет в стиле шоколадной темы */
+  color: #4e342e; /* Цвет текста (темно-шоколадный) */
+  font-family: 'Inter', sans-serif; /* Лучше использовать нейтральный, читаемый шрифт */
 }

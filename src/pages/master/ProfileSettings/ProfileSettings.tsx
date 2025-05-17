@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export default function ProfileSettings() {
@@ -8,6 +8,22 @@ export default function ProfileSettings() {
   const [contact, setContact] = useState('');
   const [description, setDescription] = useState('');
   const [photo, setPhoto] = useState<string | null>(null);
+
+  // Загружаем данные из localStorage при монтировании
+  useEffect(() => {
+    const saved = localStorage.getItem('masterProfile');
+    if (saved) {
+      try {
+        const data = JSON.parse(saved);
+        setName(data.name || '');
+        setContact(data.contact || '');
+        setDescription(data.description || '');
+        setPhoto(data.photo || null);
+      } catch (e) {
+        // Если localStorage поврежден — игнорируем
+      }
+    }
+  }, []);
 
   const handlePhotoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -19,7 +35,7 @@ export default function ProfileSettings() {
     event.preventDefault();
     localStorage.setItem(
       'masterProfile',
-      JSON.stringify({ name, contact, photo })
+      JSON.stringify({ name, contact, description, photo })
     );
     navigate('/master/profile');
   };
