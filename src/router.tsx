@@ -11,6 +11,7 @@ import MasterProfile from './pages/master/MasterProfile/MasterProfile';
 import MasterAppointments from './pages/master/MasterAppointments/MasterAppointments';
 import MasterSchedule from './pages/master/MasterSchedule/MasterShedule';
 import ProfileSettings from './pages/master/ProfileSettings/ProfileSettings';
+import MasterScheduleSettings from './pages/master/MasterSheduleSettings/MasterScheduleSettings';
 
 import HomeClient from './pages/client/ClientHome/HomeClient';
 import ClientServices from './pages/client/ClientServices/ClientServices';
@@ -31,6 +32,7 @@ const router = createBrowserRouter([
       { path: 'appointments', element: <MasterAppointments /> },
       { path: 'profile', element: <MasterProfile /> },
       { path: 'profile-settings', element: <ProfileSettings /> },
+      { path: 'schedule-settings', element: <MasterScheduleSettings /> },
     ],
   },
 
