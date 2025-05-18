@@ -1,23 +1,23 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function ProfileSettings() {
   const navigate = useNavigate();
 
-  const [name, setName] = useState('');
-  const [contact, setContact] = useState('');
-  const [description, setDescription] = useState('');
+  const [name, setName] = useState("");
+  const [contact, setContact] = useState("");
+  const [description, setDescription] = useState("");
   const [photo, setPhoto] = useState<string | null>(null);
 
   // Загружаем данные из localStorage при монтировании
   useEffect(() => {
-    const saved = localStorage.getItem('masterProfile');
+    const saved = localStorage.getItem("masterProfile");
     if (saved) {
       try {
         const data = JSON.parse(saved);
-        setName(data.name || '');
-        setContact(data.contact || '');
-        setDescription(data.description || '');
+        setName(data.name || "");
+        setContact(data.contact || "");
+        setDescription(data.description || "");
         setPhoto(data.photo || null);
       } catch (e) {
         // Если localStorage поврежден — игнорируем
@@ -34,14 +34,14 @@ export default function ProfileSettings() {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     localStorage.setItem(
-      'masterProfile',
+      "masterProfile",
       JSON.stringify({ name, contact, description, photo })
     );
-    navigate('/master/profile');
+    navigate("/master/profile");
   };
 
   return (
-    <div className="min-h-screen bg-background text-chocolate p-4 font-sans">
+    <div className="min-h-screen bg-background text-chocolate p-4 pb-16 font-sans">
       <div className="max-w-md mx-auto rounded-2xl shadow-md bg-white p-6">
         <h1 className="text-2xl font-bold mb-4 text-chocolate">
           Настройки профиля

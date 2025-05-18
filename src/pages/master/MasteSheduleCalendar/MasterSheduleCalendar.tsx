@@ -119,23 +119,25 @@ export default function MasterScheduleCalendar() {
     localStorage.setItem("calendarSchedule", JSON.stringify(data));
   };
   return (
-    <div className="max-w-xl mx-auto bg-[#fefaf6] p-6 rounded-2xl shadow text-[#4e342e]">
+    <div className="max-w-xl mx-auto bg-[#fefaf6] p-4 rounded-2xl shadow text-[#4e342e] pb-16">
       <h2 className="text-xl font-semibold mb-4">Календарь расписания</h2>
-
-      <DayPicker
-        mode="multiple"
-        selected={selectedDates}
-        onSelect={handleDateSelect}
-        modifiers={{ scheduled: scheduledDates }}
-        modifiersClassNames={{
-          selected: "bg-[#a1887f] text-white",
-          today: "border border-[#a1887f]",
-          scheduled: "bg-[#d7ccc8] text-black",
-        }}
-        locale={ru}
-        className="mb-6"
-      />
-
+      <div className="overflow-x-auto">
+        <div className="max-w-[320px] max-w-full">
+          <DayPicker
+            mode="multiple"
+            selected={selectedDates}
+            onSelect={handleDateSelect}
+            modifiers={{ scheduled: scheduledDates }}
+            modifiersClassNames={{
+              selected: "bg-[#a1887f] text-white",
+              today: "border border-[#a1887f]",
+              scheduled: "bg-[#d7ccc8] text-black",
+            }}
+            locale={ru}
+            className="mb-6 max-w-full overflow-x-auto"
+          />
+        </div>
+      </div>
       {selectedDates && (
         <>
           <div className="grid grid-cols-2 gap-4">
@@ -181,7 +183,7 @@ export default function MasterScheduleCalendar() {
             </div>
           </div>
 
-          <div className="flex gap-4 mt-4">
+          <div className="flex justify-around gap-4 mt-5 text-[11px]">
             <Button onClick={saveSchedule}>Сохранить день</Button>
             <Button onClick={handleDuplicate}>Дублировать день</Button>
           </div>

@@ -59,9 +59,14 @@ export default function MasterScheduleSettings() {
   const sortedDates = Object.keys(calendarSchedule).sort();
 
   return (
-    <div className="min-h-screen bg-[#f8f5f2] p-4 text-[#4e342e]">
+    <div className="min-h-screen bg-[#f8f5f2] pb-16 text-[#4e342e]">
       <h1 className="text-2xl font-bold mb-6">Ваше расписание</h1>
-
+      <button
+        onClick={goToCalendar}
+        className="bg-[#a1887f] text-[12px] text-white py-2 px-4 mb-4 rounded-xl shadow hover:bg-[#8d6e63]"
+      >
+        Настроить рабочие дни
+      </button>
       {sortedDates.length === 0 ? (
         <p className="mb-6">
           Расписание не настроено. Перейдите в календарь для настройки рабочих
@@ -104,13 +109,6 @@ export default function MasterScheduleSettings() {
           })}
         </ul>
       )}
-
-      <button
-        onClick={goToCalendar}
-        className="bg-[#a1887f] text-white py-2 px-4 rounded-xl shadow hover:bg-[#8d6e63]"
-      >
-        Настроить рабочие дни
-      </button>
     </div>
   );
 }

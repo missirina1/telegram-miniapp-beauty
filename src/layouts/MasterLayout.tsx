@@ -1,5 +1,5 @@
-import { Outlet, useLocation, Link } from 'react-router-dom';
-import { Home, Calendar, List, User } from 'lucide-react';
+import { Outlet, useLocation, Link } from "react-router-dom";
+import { Home, Calendar, List, User } from "lucide-react";
 
 export default function MasterLayout() {
   const location = useLocation();
@@ -10,7 +10,7 @@ export default function MasterLayout() {
   return (
     <div className="flex flex-col min-h-screen">
       <div className="flex-grow bg-[#f8f5f2] text-[#4e342e]">
-        <div className="w-full max-w-md mx-auto px-4 py-2">
+        <div className="w-full max-w-md mx-auto px-1 py-2">
           <Outlet />
         </div>
       </div>
@@ -18,13 +18,13 @@ export default function MasterLayout() {
         <Link
           to="/master/home"
           className={
-            current.includes('home') ? 'flex flex-col items-center' : ''
+            current.includes("home") ? "flex flex-col items-center" : ""
           }
         >
           <Home
             size={24}
             className={`${
-              isActive('home') ? 'text-[#6d4c41]' : 'text-[#a1887f]'
+              isActive("home") ? "text-[#6d4c41]" : "text-[#a1887f]"
             } transition-colors`}
           />
         </Link>
@@ -32,13 +32,13 @@ export default function MasterLayout() {
         <Link
           to="/master/schedule"
           className={
-            current.includes('schedule') ? 'flex flex-col items-center' : ''
+            current.includes("schedule") ? "flex flex-col items-center" : ""
           }
         >
           <Calendar
             size={24}
             className={`${
-              isActive('schedule') ? 'text-[#6d4c41]' : 'text-[#a1887f]'
+              isActive("schedule") ? "text-[#6d4c41]" : "text-[#a1887f]"
             } transition-colors`}
           />
         </Link>
@@ -46,13 +46,13 @@ export default function MasterLayout() {
         <Link
           to="/master/appointments"
           className={
-            current.includes('appointments') ? 'flex flex-col items-center' : ''
+            current.includes("appointments") ? "flex flex-col items-center" : ""
           }
         >
           <List
             size={24}
             className={`${
-              isActive('appointments') ? 'text-[#6d4c41]' : 'text-[#a1887f]'
+              isActive("appointments") ? "text-[#6d4c41]" : "text-[#a1887f]"
             } transition-colors`}
           />
         </Link>
@@ -60,13 +60,13 @@ export default function MasterLayout() {
         <Link
           to="/master/profile"
           className={
-            current.includes('profile') ? 'flex flex-col items-center' : ''
+            current.includes("profile") ? "flex flex-col items-center" : ""
           }
         >
           <User
             size={24}
             className={`${
-              isActive('profile') ? 'text-[#6d4c41]' : 'text-[#a1887f]'
+              isActive("profile") ? "text-[#6d4c41]" : "text-[#a1887f]"
             } transition-colors`}
           />
         </Link>
