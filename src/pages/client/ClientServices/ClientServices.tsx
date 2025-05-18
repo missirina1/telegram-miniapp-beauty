@@ -79,25 +79,24 @@ export default function ClientServices() {
 
   return (
     <div className="p-5 bg-[#f8f5f2] text-[#4e342e] min-h-screen flex flex-col">
-      <h1 className="text-xl font-semibold mb-4">
+      <h1 className="text-xl font-semibold mb-8 text-center">
         Выбери услугу наращивания ресниц
       </h1>
 
-      <div
-        className="grid grid-cols-2 sm:grid-cols-2 gap-4 overflow-y-auto flex-grow max-h-[70vh] pr-2"
-        style={{ scrollbarWidth: "thin" }}
-      >
+      <div className="grid grid-cols-2 gap-4 overflow-y-auto flex-grow max-h-[70vh]">
         {mockServices.map(({ id, name, volume, duration, price, photo }) => (
           <div
             key={id}
-            className="bg-[#d7ccc8] rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow max-w-[120px] mx-auto"
+            className="bg-[#d7ccc8] rounded-2xl shadow-md hover:shadow-lg transition-shadow w-full max-w-[170px] mx-auto"
           >
-            <img src={photo} className="w-full h-30 object-cover rounded-lg" />
-            <div className="p-3 text-left">
-              <h4 className="font-semibold mb-1 text-[11px] break-words whitespace-normal  truncate">
-                {name}
-              </h4>
-              <p className="text-[11px] text-[#6d4c41]">
+            <img
+              src={photo}
+              alt={name}
+              className="w-full h-[120px] object-cover rounded-t-2xl"
+            />
+            <div className="p-2 text-left text-xs">
+              <h4 className="font-semibold mb-1 break-words">{name}</h4>
+              <p className="text-[#6d4c41] leading-tight">
                 Объём: {volume} <br />
                 Время: {duration} <br />
                 Цена: {price}
