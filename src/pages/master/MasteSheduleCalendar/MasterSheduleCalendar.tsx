@@ -31,9 +31,8 @@ interface DaySchedule {
 }
 
 export default function MasterScheduleCalendar() {
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(
-    new Date()
-  );
+  const [selectedDates, setSelectedDates] = useState<Date[]>([]);
+
   const [schedules, setSchedules] = useState<Record<string, DaySchedule>>({});
   const [currentSchedule, setCurrentSchedule] = useState<DaySchedule>({
     startTime: "09:00",
@@ -41,12 +40,11 @@ export default function MasterScheduleCalendar() {
     slotDuration: 60,
   });
   const navigate = useNavigate();
-  const formattedDate = selectedDate ? format(selectedDate, "yyyy-MM-dd") : "";
 
-  const handleDateSelect = (date?: Date) => {
-    setSelectedDate(date);
-    if (date) {
-      const key = format(date, "yyyy-MM-dd");
+  const handleDateSelect = (dates?: Date[] | undefined) => {
+    setSelectedDates(dates || []);
+    if (dates && dates.length > 0) {
+      const key = format(dates[0], "yyyy-MM-dd");
       const existing = schedules[key];
       setCurrentSchedule(
         existing || {
@@ -72,13 +70,14 @@ export default function MasterScheduleCalendar() {
   };
 
   const saveSchedule = () => {
-    if (!selectedDate) return;
+    if (!selectedDates) return;
     if (!validateSchedule()) return;
 
-    const updated = {
-      ...schedules,
-      [formattedDate]: currentSchedule,
-    };
+    const updated = { ...schedules };
+    selectedDates.forEach((date) => {
+      const key = format(date, "yyyy-MM-dd");
+      updated[key] = currentSchedule;
+    });
     setSchedules(updated);
     saveToLocalStorage(updated);
     alert("Расписание сохранено.");
@@ -86,29 +85,27 @@ export default function MasterScheduleCalendar() {
   };
 
   const handleDuplicate = () => {
-    const targetDate = prompt(
-      "Введите дату для копирования в формате ГГГГ-ММ-ДД:"
-    );
-    if (!targetDate) return;
-
-    if (schedules[formattedDate]) {
-      const updated = {
-        ...schedules,
-        [targetDate]: { ...schedules[formattedDate] },
-      };
-      setSchedules(updated);
-      saveToLocalStorage(updated);
-      alert(`Скопировано в ${targetDate}`);
-    } else {
-      alert("Сначала сохраните текущее расписание.");
+    const sourceDate = prompt("Введите дату-источник в формате ГГГГ-ММ-ДД:");
+    if (!sourceDate || !schedules[sourceDate]) {
+      alert("Неверная дата или нет сохранённого расписания.");
+      return;
     }
+
+    const updated = { ...schedules };
+    selectedDates.forEach((date) => {
+      const key = format(date, "yyyy-MM-dd");
+      updated[key] = { ...schedules[sourceDate] };
+    });
+    setSchedules(updated);
+    saveToLocalStorage(updated);
+    alert(`Расписание с ${sourceDate} скопировано на выбранные даты`);
   };
 
   // Преобразуем все ключи с расписанием в Date[]
   const scheduledDates = Object.keys(schedules).map((d) => new Date(d));
 
   useEffect(() => {
-    const saved = localStorage.getItem("masterSchedules");
+    const saved = localStorage.getItem("calendarSchedule");
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
@@ -126,8 +123,8 @@ export default function MasterScheduleCalendar() {
       <h2 className="text-xl font-semibold mb-4">Календарь расписания</h2>
 
       <DayPicker
-        mode="single"
-        selected={selectedDate}
+        mode="multiple"
+        selected={selectedDates}
         onSelect={handleDateSelect}
         modifiers={{ scheduled: scheduledDates }}
         modifiersClassNames={{
@@ -139,7 +136,7 @@ export default function MasterScheduleCalendar() {
         className="mb-6"
       />
 
-      {selectedDate && (
+      {selectedDates && (
         <>
           <div className="grid grid-cols-2 gap-4">
             <div>
