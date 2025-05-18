@@ -1,13 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import AvatarEditor from "react-avatar-editor";
 
 export default function ProfileSettings() {
   const navigate = useNavigate();
+  const editorRef = useRef<AvatarEditor>(null);
 
   const [name, setName] = useState("");
   const [contact, setContact] = useState("");
   const [description, setDescription] = useState("");
-  const [photo, setPhoto] = useState<string | null>(null);
+  const [photoFile, setPhotoFile] = useState<File | null>(null);
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const [scale, setScale] = useState(1);
 
   // Загружаем данные из localStorage при монтировании
   useEffect(() => {
@@ -18,7 +22,7 @@ export default function ProfileSettings() {
         setName(data.name || "");
         setContact(data.contact || "");
         setDescription(data.description || "");
-        setPhoto(data.photo || null);
+        setPhotoPreview(data.photo || null);
       } catch (e) {
         // Если localStorage поврежден — игнорируем
       }
@@ -27,15 +31,23 @@ export default function ProfileSettings() {
 
   const handlePhotoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
-      setPhoto(URL.createObjectURL(event.target.files[0]));
+      setPhotoFile(event.target.files[0]);
     }
   };
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
+
+    let finalPhoto = photoPreview;
+
+    if (editorRef.current) {
+      const canvas = editorRef.current.getImageScaledToCanvas().toDataURL();
+      finalPhoto = canvas;
+    }
+
     localStorage.setItem(
       "masterProfile",
-      JSON.stringify({ name, contact, description, photo })
+      JSON.stringify({ name, contact, description, photo: finalPhoto })
     );
     navigate("/master/profile");
   };
@@ -89,10 +101,33 @@ export default function ProfileSettings() {
               onChange={handlePhotoChange}
               className="w-full text-sm text-chocolate file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-chocolate-light file:text-white hover:file:bg-chocolate"
             />
-            {photo && (
+            {photoFile && (
+              <div className="flex flex-col items-center gap-2">
+                <AvatarEditor
+                  ref={editorRef}
+                  image={photoFile}
+                  width={150}
+                  height={150}
+                  border={30}
+                  borderRadius={75}
+                  color={[255, 255, 255, 0.6]} // фон
+                  scale={scale}
+                  rotate={0}
+                />
+                <input
+                  type="range"
+                  min="1"
+                  max="3"
+                  step="0.01"
+                  value={scale}
+                  onChange={(e) => setScale(parseFloat(e.target.value))}
+                />
+              </div>
+            )}
+            {!photoFile && photoPreview && (
               <img
-                src={photo}
-                alt="Предпросмотр"
+                src={photoPreview}
+                alt="Текущее фото"
                 className="mt-2 h-24 w-24 object-cover rounded-full"
               />
             )}
