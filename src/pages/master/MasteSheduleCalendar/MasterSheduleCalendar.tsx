@@ -134,12 +134,9 @@ export default function MasterScheduleCalendar() {
     localStorage.setItem("calendarSchedule", JSON.stringify(data));
   };
 
-  const saveAppointmentsToLocalStorage = (data: Appointment[]) => {
-    localStorage.setItem("appointments", JSON.stringify(data));
-  };
   return (
     <div className="max-w-xl mx-auto bg-[#fefaf6] p-4 rounded-2xl shadow text-[#4e342e] pb-16">
-      <h2 className="text-xl font-semibold mb-4 mt-2">Календарь расписания</h2>
+      <h2 className="text-xl font-semibold mb-4">Календарь расписания</h2>
       <div className="overflow-x-auto">
         <div className="max-w-[320px] max-w-full flex justify-center">
           <DayPicker
@@ -153,7 +150,7 @@ export default function MasterScheduleCalendar() {
               scheduled: "bg-[#d7ccc8] text-black",
             }}
             locale={ru}
-            className="mb-6 max-w-full overflow-x-auto border border-[#d7ccc8] rounded-lg shadow p-5"
+            className="mb-6 max-w-full overflow-x-auto border border-[#d7ccc8] rounded-lg shadow p-4"
           />
         </div>
       </div>
