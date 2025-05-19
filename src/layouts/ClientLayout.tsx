@@ -8,7 +8,7 @@ export default function ClientLayout() {
   return (
     <div className="flex flex-col min-h-screen">
       <div className="flex-grow bg-[#f8f5f2] text-[#4e342e]">
-        <div className="w-full max-w-md mx-auto px-4 py-2">
+        <div className="w-full max-w-md mx-auto px-1 py-2">
           <Outlet />
         </div>
       </div>

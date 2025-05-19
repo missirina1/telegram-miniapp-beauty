@@ -4,7 +4,7 @@
 
 /* Глобальные переменные и стили */
 :root {
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: "Inter", system-ui, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -29,9 +29,27 @@ body {
 
 /* Ссылки */
 a {
-  color: theme('colors.blue.600');
+  color: theme("colors.blue.600");
   text-decoration: none;
 }
 a:hover {
-  color: theme('colors.blue.800');
+  color: theme("colors.blue.800");
+}
+
+.react-calendar__tile--now {
+  background: #87461800 !important; /* убираем жёлтый фон */
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+}
+.react-calendar__tile--active {
+  background: #f5f2ed !important; /* цвет фона */
+  border: 1px solid #7b3f00 !important; /* шоколадный цвет */
+  color: #7b3f00 !important;
+  border-radius: 8px;
+  font-weight: bold;
+}
+/* Переопределяем стили react-calendar */
+.react-calendar__tile.has-available {
+  color: rgba(0, 128, 0, 0.871);
 }

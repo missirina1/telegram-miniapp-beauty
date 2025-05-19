@@ -5,6 +5,18 @@ import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import { useNavigate } from "react-router-dom";
 
+interface Appointment {
+  date: string; // в формате yyyy-MM-dd
+  time: string; // HH:mm
+  clientName: string;
+}
+
+interface DaySchedule {
+  startTime: string;
+  endTime: string;
+  slotDuration: number;
+}
+
 function Input(props: any) {
   return <input className="w-full border p-2 rounded" {...props} />;
 }
@@ -24,15 +36,9 @@ function Label({ children }: any) {
   return <label className="block mb-1 font-medium">{children}</label>;
 }
 
-interface DaySchedule {
-  startTime: string;
-  endTime: string;
-  slotDuration: number;
-}
-
 export default function MasterScheduleCalendar() {
   const [selectedDates, setSelectedDates] = useState<Date[]>([]);
-
+  const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [schedules, setSchedules] = useState<Record<string, DaySchedule>>({});
   const [currentSchedule, setCurrentSchedule] = useState<DaySchedule>({
     startTime: "09:00",
@@ -108,21 +114,34 @@ export default function MasterScheduleCalendar() {
     const saved = localStorage.getItem("calendarSchedule");
     if (saved) {
       try {
-        const parsed = JSON.parse(saved);
-        setSchedules(parsed);
+        setSchedules(JSON.parse(saved));
       } catch (e) {
-        console.error("Ошибка при загрузке расписания из localStorage:", e);
+        console.error("Ошибка при загрузке расписания");
+      }
+    }
+
+    const savedAppointments = localStorage.getItem("appointments");
+    if (savedAppointments) {
+      try {
+        setAppointments(JSON.parse(savedAppointments));
+      } catch (e) {
+        console.error("Ошибка при загрузке записей");
       }
     }
   }, []);
+
   const saveToLocalStorage = (data: Record<string, DaySchedule>) => {
     localStorage.setItem("calendarSchedule", JSON.stringify(data));
   };
+
+  const saveAppointmentsToLocalStorage = (data: Appointment[]) => {
+    localStorage.setItem("appointments", JSON.stringify(data));
+  };
   return (
     <div className="max-w-xl mx-auto bg-[#fefaf6] p-4 rounded-2xl shadow text-[#4e342e] pb-16">
-      <h2 className="text-xl font-semibold mb-4">Календарь расписания</h2>
+      <h2 className="text-xl font-semibold mb-4 mt-2">Календарь расписания</h2>
       <div className="overflow-x-auto">
-        <div className="max-w-[320px] max-w-full">
+        <div className="max-w-[320px] max-w-full flex justify-center">
           <DayPicker
             mode="multiple"
             selected={selectedDates}
@@ -134,7 +153,7 @@ export default function MasterScheduleCalendar() {
               scheduled: "bg-[#d7ccc8] text-black",
             }}
             locale={ru}
-            className="mb-6 max-w-full overflow-x-auto"
+            className="mb-6 max-w-full overflow-x-auto border border-[#d7ccc8] rounded-lg shadow p-5"
           />
         </div>
       </div>
@@ -182,6 +201,35 @@ export default function MasterScheduleCalendar() {
               />
             </div>
           </div>
+
+          {selectedDates.length === 1 && (
+            <div className="mt-4 text-sm">
+              <h3 className="font-semibold mb-2">
+                Записи на {format(selectedDates[0], "dd MMMM", { locale: ru })}
+              </h3>
+              <ul className="space-y-1">
+                {appointments
+                  .filter(
+                    (a) => a.date === format(selectedDates[0], "yyyy-MM-dd")
+                  )
+                  .map((a, i) => (
+                    <li
+                      key={i}
+                      className="text-xs border p-2 rounded bg-[#f3e5f5]"
+                    >
+                      {a.time} — {a.clientName}
+                    </li>
+                  ))}
+                {appointments.filter(
+                  (a) => a.date === format(selectedDates[0], "yyyy-MM-dd")
+                ).length === 0 && (
+                  <li className="text-xs text-gray-500">
+                    Нет записей на этот день
+                  </li>
+                )}
+              </ul>
+            </div>
+          )}
 
           <div className="flex justify-around gap-4 mt-5 text-[11px]">
             <Button onClick={saveSchedule}>Сохранить день</Button>

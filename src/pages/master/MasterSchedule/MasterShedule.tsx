@@ -6,6 +6,7 @@ type DaySchedule = {
   endTime: string;
   slotDuration: number;
 };
+type TimeSlotsByDate = Record<string, string[]>;
 
 type CalendarSchedule = Record<string, DaySchedule>;
 
@@ -41,6 +42,20 @@ export default function MasterScheduleSettings() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (Object.keys(calendarSchedule).length > 0) {
+      const slotsByDate: TimeSlotsByDate = {};
+      for (const [date, schedule] of Object.entries(calendarSchedule)) {
+        slotsByDate[date] = generateTimeSlots(
+          schedule.startTime,
+          schedule.endTime,
+          schedule.slotDuration
+        );
+      }
+      localStorage.setItem("masterAvailableSlots", JSON.stringify(slotsByDate));
+    }
+  }, [calendarSchedule]);
+
+  useEffect(() => {
     const saved = localStorage.getItem("calendarSchedule");
     if (saved) {
       try {
@@ -59,8 +74,8 @@ export default function MasterScheduleSettings() {
   const sortedDates = Object.keys(calendarSchedule).sort();
 
   return (
-    <div className="min-h-screen bg-[#f8f5f2] pb-16 text-[#4e342e]">
-      <h1 className="text-2xl font-bold mb-6">Ваше расписание</h1>
+    <div className="min-h-screen bg-[#f8f5f2] p-4 pb-16 text-[#4e342e]">
+      <h1 className="text-2xl font-bold mb-6 mt-4">Ваше расписание</h1>
       <button
         onClick={goToCalendar}
         className="bg-[#a1887f] text-[12px] text-white py-2 px-4 mb-4 rounded-xl shadow hover:bg-[#8d6e63]"
